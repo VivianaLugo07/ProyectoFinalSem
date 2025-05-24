@@ -4,6 +4,7 @@ namespace ProyectoFinalSem.Modelos
 {
     public class Autor
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El nombre del autor es obligatorio")]
@@ -14,5 +15,7 @@ namespace ProyectoFinalSem.Modelos
         [StringLength(100, ErrorMessage = "La nacionalidad no debe exceder los 100 caracteres")]
         public string? Nacionalidad { get; set; }
 
+        [StringLength(200, ErrorMessage = "El nombre del libro no debe exceder los 200 caracteres")]
+        public string? Libro { get; set; }
     }
 }
