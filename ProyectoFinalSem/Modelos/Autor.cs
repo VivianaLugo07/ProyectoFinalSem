@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProyectoFinalSem.Data
+namespace ProyectoFinalSem.Modelos
 {
     public class Autor
     {
@@ -14,6 +14,5 @@ namespace ProyectoFinalSem.Data
         [StringLength(100, ErrorMessage = "La nacionalidad no debe exceder los 100 caracteres")]
         public string? Nacionalidad { get; set; }
 
-        public ICollection<Libro>? Libros { get; set; }
     }
 }
