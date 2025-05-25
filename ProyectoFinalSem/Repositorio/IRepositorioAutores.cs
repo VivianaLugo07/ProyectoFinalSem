@@ -2,6 +2,7 @@
 
 namespace ProyectoFinalSem.Repositorio
 {
+    //interfaz del repositorio
     public interface IRepositorioAutores
     {
         // Lista de autores

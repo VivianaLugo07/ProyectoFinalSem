@@ -1,0 +1,89 @@
+﻿@page "/autores/nueva"
+@page "/autores/editar/{Id:int}"
+@rendermode InteractiveServer
+@inject NavigationManager _navigationManager
+@inject IRepositorioAutores _repositorioAutores
+
+<PageTitle>Autores</PageTitle>
+
+<!--mensaje de modificar persona-->
+<h3>@_mensaje Autor</h3>
+
+<EditForm Model="_autor" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3 row">
+        <label for="txtNombre" class="col-sm-2 col-form-label">Nombre</label>
+        <div class="col-sm-10">
+            <InputText id="txtNombre" class="form-control" @bind-Value="_autor.Nombre" />
+            <ValidationMessage For="@(() => _autor.Nombre)" />
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="txtNacionalidad" class="col-sm-2 col-form-label">Nacionalidad</label>
+        <div class="col-sm-10">
+            <InputText id="txtNacionalidad" class="form-control" @bind-Value="_autor.Nacionalidad" />
+            <ValidationMessage For="@(() => _autor.Nacionalidad)" />
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="txtLibro" class="col-sm-2 col-form-label">Libro</label>
+        <div class="col-sm-10">
+            <InputText id="txtLibro" class="form-control" @bind-Value="_autor.Libro" />
+            <ValidationMessage For="@(() => _autor.Libro)" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a class="btn btn-danger" href="/autores">Cancelar</a>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Autor _autor = new();
+    private string _mensaje = "Nuevo";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            var autorExistente = await _repositorioAutores.Get(Id);
+            if (autorExistente != null)
+            {
+                _autor = autorExistente;
+                _mensaje = "Modificar";
+            }
+            else
+            {
+                _mensaje = "Nueva";
+            }
+        }
+    }
+
+    private async Task Guardar()
+    {
+        if (Id > 0)
+        {
+            await _repositorioAutores.Update(Id, _autor);
+        }
+        else
+        {
+            await _repositorioAutores.Add(_autor);
+        }
+
+        Cancelar(); // Redirige después de guardar
+    }
+
+    private void Cancelar()
+    {
+        _navigationManager.NavigateTo("/autores");
+    }
+}

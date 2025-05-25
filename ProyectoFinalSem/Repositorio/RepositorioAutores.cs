@@ -1,32 +1,56 @@
-﻿using ProyectoFinalSem.Modelos;
+﻿using Microsoft.EntityFrameworkCore;
+using ProyectoFinalSem.Modelos;
+//  acciones para conectarme con la base de datos
+
 namespace ProyectoFinalSem.Repositorio
-    //acciones para conectarme con la base de datos
 {
     public class RepositorioAutores : IRepositorioAutores
     {
-        public Task<Autor> Add(Autor autor)
+        private readonly BibliotecaDbContext _context;
+
+        public RepositorioAutores(BibliotecaDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task Delete(int id)
+        public async Task<Autor?> Add(Autor autor)
         {
-            throw new NotImplementedException();
+            await _context.Autores.AddAsync(autor);
+            await _context.SaveChangesAsync();
+            return autor;
         }
 
-        public Task<Autor?> Get(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var autor = await _context.Autores.FindAsync(id);
+            if (autor != null)
+            {
+                _context.Autores.Remove(autor);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public Task<List<Autor>> GetAll()
+        public async Task<Autor?> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Autores.FindAsync(id);
         }
 
-        public Task Update(int id, Autor autor)
+        public async Task<List<Autor>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Autores.ToListAsync();
+        }
+
+        public async Task Update(int id, Autor autor)
+        {
+            var existente = await _context.Autores.FindAsync(id);
+            if (existente != null)
+            {
+                existente.Nombre = autor.Nombre;
+                existente.Nacionalidad = autor.Nacionalidad;
+                existente.Libro = autor.Libro;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
+

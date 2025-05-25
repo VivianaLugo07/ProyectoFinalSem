@@ -2,11 +2,13 @@ using ProyectoFinalSem;
 using ProyectoFinalSem.Modelos;
 using ProyectoFinalSem.Components;
 using Microsoft.EntityFrameworkCore;
+using ProyectoFinalSem.Repositorio;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<BibliotecaDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IRepositorioAutores, RepositorioAutores>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

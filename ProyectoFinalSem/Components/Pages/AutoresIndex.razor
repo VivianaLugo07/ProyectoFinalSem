@@ -1,6 +1,7 @@
 ﻿@page "/autores"
 @rendermode InteractiveServer
 @inject NavigationManager _navigator;
+@inject IRepositorioAutores _repositorio;
 
 <h3>Autores</h3>
 
@@ -51,19 +52,20 @@ else if (_autores.Count > 0)
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulación de carga
-        //_autores = await _repositorio.GetAll();
+        // conjunto de datos del repositorio
+        _autores = await _repositorio.GetAll();
     }
 
     private async void Eliminar(Autor autor)
     {
-        //await _repositorio.Delete(autor.Id);
+        await _repositorio.Delete(autor.Id);
         _autores!.Remove(autor);
         StateHasChanged();
     }
 
     private void Editar(int id)
     {
+        //manda a llamar un componente razor pasando como parámetro el id
         _navigator.NavigateTo($"/autores/editar/{id}");
     }
 }
