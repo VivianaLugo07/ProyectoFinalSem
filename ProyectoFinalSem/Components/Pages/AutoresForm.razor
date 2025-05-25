@@ -11,6 +11,8 @@
 
 <EditForm Model="_autor" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    <ValidationSummary /> 
+
 
     <div class="mb-3 row">
         <label for="txtNombre" class="col-sm-2 col-form-label">Nombre</label>
@@ -63,7 +65,7 @@
             }
             else
             {
-                _mensaje = "Nueva";
+                _mensaje = "Nuevo";
             }
         }
     }
