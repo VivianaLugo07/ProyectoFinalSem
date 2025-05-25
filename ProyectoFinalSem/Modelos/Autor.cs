@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ProyectoFinalSem.Modelos;
+using System.ComponentModel.DataAnnotations;
 
-namespace ProyectoFinalSem.Modelos
+public class Autor
 {
-    public class Autor
-    {
-        [Key]
-        public int Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 
-        [Required(ErrorMessage = "El nombre del autor es obligatorio")]
-        [StringLength(100, ErrorMessage = "El nombre no debe exceder los 100 caracteres")]
-        public string? Nombre { get; set; }
+    [Required]
+    [StringLength(100)]
+    public string? Nombre { get; set; }
 
-        [Required(ErrorMessage = "La nacionalidad es obligatoria")]
-        [StringLength(100, ErrorMessage = "La nacionalidad no debe exceder los 100 caracteres")]
-        public string? Nacionalidad { get; set; }
+    [Required]
+    [StringLength(100)]
+    public string? Nacionalidad { get; set; }
 
-        [StringLength(200, ErrorMessage = "El nombre del libro no debe exceder los 200 caracteres")]
-        public string? Libro { get; set; }
-    }
+    // Esto ya no va aquí:
+    public string? Libro { get; set; }
+
+    
 }
