@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<BibliotecaDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRepositorioAutores, RepositorioAutores>();
+builder.Services.AddScoped<IRepositorioClasificaciones, RepositorioClasificaciones>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

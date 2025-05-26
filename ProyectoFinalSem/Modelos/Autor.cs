@@ -17,7 +17,7 @@ public class Autor
     public string? Libro { get; set; }
     //propiedad de navegacion para EF
     public int ClasificacionId { get; set; }
-    //para ller el contenido
+    //para llenar el contenido
     virtual public Clasificacion? Clasificacion { get; set; }
 
 }
