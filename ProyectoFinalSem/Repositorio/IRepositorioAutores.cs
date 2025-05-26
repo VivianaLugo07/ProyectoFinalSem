@@ -15,6 +15,7 @@ namespace ProyectoFinalSem.Repositorio
         Task Update(int id, Autor autor);
         // Eliminar autor
         Task Delete(int id);
+        
     }
 }
 

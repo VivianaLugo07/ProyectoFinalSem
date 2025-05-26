@@ -3,6 +3,7 @@
 @rendermode InteractiveServer
 @inject NavigationManager _navigationManager
 @inject IRepositorioAutores _repositorioAutores
+@inject IRepositorioClasificaciones _repositorioClasificaciones
 
 <PageTitle>Autores</PageTitle>
 
@@ -37,13 +38,23 @@
             <ValidationMessage For="@(() => _autor.Libro)" />
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-sm-10 offset-sm-2">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a class="btn btn-danger" href="/autores">Cancelar</a>
+    <!-------------------PARA CLASIFICACIONES----------------------------------->
+    <div class="mb-3 row">
+        <label for="txtClasificacion" class="col-sm-2 col-form-label">Clasificación</label>
+        <div class="col-sm-10">
+            <InputSelect class="form-select" @bind-Value="_autor.ClasificacionId">
+                <option value="0" enable="enable">Seleccione clasificación...</option>
+                @foreach (Clasificacion clasificacion in _clasificaciones)
+                {
+                    <option value="@clasificacion.Id">@clasificacion.Nombre</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => _autor.Libro)" />
         </div>
-    </div>
+    <!------------------------------------------------------------------------------->
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button class="btn btn-danger ms-3"@onclick= "Cancelar" @onclick:preventDefault>Cancelar</button>
+
 </EditForm>
 
 @code {
@@ -53,8 +64,11 @@
     private Autor _autor = new();
     private string _mensaje = "Nuevo";
 
+    private List<Clasificacion> _clasificaciones = new();
     protected override async Task OnInitializedAsync()
     {
+        _clasificaciones = await _repositorioClasificaciones.GetClasificaciones();
+
         if (Id > 0)
         {
             var autorExistente = await _repositorioAutores.Get(Id);
