@@ -1,0 +1,83 @@
+﻿@page "/clasificaciones"
+@rendermode InteractiveServer
+@inject IRepositorioClasificaciones _repositorioClasificaciones
+@inject NavigationManager _navigationManager
+
+<PageTitle>Clasificaciones</PageTitle>
+
+<h3>Clasificaciones</h3>
+
+<a class="btn btn-primary mb-3" href="/clasificaciones/nueva">Nueva clasificación</a>
+
+@if (_mensajeError != "")
+{
+    <div class="alert alert-danger">
+        @_mensajeError
+    </div>
+}
+
+@if (_clasificaciones == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else if (_clasificaciones.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Clasificacion clasificacion in _clasificaciones)
+            {
+                <tr>
+                    <td>@clasificacion.Nombre</td>
+                    <td>
+                        <button class="btn btn-outline-primary" @onclick="@(() => Editar(clasificacion))" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" @onclick="@(() => Eliminar(clasificacion))" title="Eliminar">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay clasificaciones registradas.</p>
+}
+
+@code {
+    private List<Clasificacion>? _clasificaciones;
+    private string _mensajeError = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _clasificaciones = await _repositorioClasificaciones.GetAll();
+    }
+
+    private void Editar(Clasificacion clasificacion)
+    {
+        _navigationManager.NavigateTo($"/clasificaciones/editar/{clasificacion.Id}");
+    }
+
+    private async Task Eliminar(Clasificacion clasificacion)
+    {
+        _mensajeError = "";
+
+        try
+        {
+            await _repositorioClasificaciones.Delete(clasificacion.Id);
+            _clasificaciones = await _repositorioClasificaciones.GetAll();
+        }
+        catch
+        {
+            _mensajeError = "Ocurrió un error al eliminar la clasificación.";
+        }
+    }
+}
