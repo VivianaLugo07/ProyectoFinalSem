@@ -41,15 +41,15 @@
     <!-------------------PARA CLASIFICACIONES----------------------------------->
     <div class="mb-3 row">
         <label for="txtClasificacion" class="col-sm-2 col-form-label">Clasificación</label>
-        <div class="col-sm-10">
+        <div class="col-10">
             <InputSelect class="form-select" @bind-Value="_autor.ClasificacionId">
-                <option value="0" enable="enable">Seleccione clasificación...</option>
+                <option value="0" enabled="enabled">Seleccione clasificación...</option>
                 @foreach (Clasificacion clasificacion in _clasificaciones)
                 {
                     <option value="@clasificacion.Id">@clasificacion.Nombre</option>
                 }
             </InputSelect>
-            <ValidationMessage For="@(() => _autor.Libro)" />
+            <ValidationMessage For="@(() => _autor.Nombre)" />
         </div>
     </div>
     <!------------------------------------------------------------------------------->
