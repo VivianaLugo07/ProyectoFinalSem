@@ -11,6 +11,7 @@ builder.Services.AddDbContext<BibliotecaDbContext>(options => options.UseSqlServ
 builder.Services.AddScoped<IRepositorioAutores, RepositorioAutores>();
 builder.Services.AddScoped<IRepositorioClasificaciones, RepositorioClasificaciones>();
 builder.Services.AddScoped<IRepositorioEditoriales, RepositorioEditoriales>();
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

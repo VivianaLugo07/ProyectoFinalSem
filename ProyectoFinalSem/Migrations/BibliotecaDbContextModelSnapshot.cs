@@ -21,7 +21,22 @@ namespace ProyectoFinalSem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Autor", b =>
+            modelBuilder.Entity("AutorEditorial", b =>
+                {
+                    b.Property<int>("AutoresId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EditorialesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AutoresId", "EditorialesId");
+
+                    b.HasIndex("EditorialesId");
+
+                    b.ToTable("AutorEditorial");
+                });
+
+            modelBuilder.Entity("ProyectoFinalSem.Modelos.Autor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,21 +68,6 @@ namespace ProyectoFinalSem.Migrations
                     b.ToTable("Autores");
                 });
 
-            modelBuilder.Entity("AutorEditorial", b =>
-                {
-                    b.Property<int>("AutoresId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EditorialesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("AutoresId", "EditorialesId");
-
-                    b.HasIndex("EditorialesId");
-
-                    b.ToTable("AutorEditorial");
-                });
-
             modelBuilder.Entity("ProyectoFinalSem.Modelos.Clasificacion", b =>
                 {
                     b.Property<int>("Id")
@@ -86,8 +86,11 @@ namespace ProyectoFinalSem.Migrations
 
             modelBuilder.Entity("ProyectoFinalSem.Modelos.Editorial", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -99,20 +102,9 @@ namespace ProyectoFinalSem.Migrations
                     b.ToTable("Editoriales");
                 });
 
-            modelBuilder.Entity("Autor", b =>
-                {
-                    b.HasOne("ProyectoFinalSem.Modelos.Clasificacion", "Clasificacion")
-                        .WithMany("Autores")
-                        .HasForeignKey("ClasificacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Clasificacion");
-                });
-
             modelBuilder.Entity("AutorEditorial", b =>
                 {
-                    b.HasOne("Autor", null)
+                    b.HasOne("ProyectoFinalSem.Modelos.Autor", null)
                         .WithMany()
                         .HasForeignKey("AutoresId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -123,6 +115,17 @@ namespace ProyectoFinalSem.Migrations
                         .HasForeignKey("EditorialesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ProyectoFinalSem.Modelos.Autor", b =>
+                {
+                    b.HasOne("ProyectoFinalSem.Modelos.Clasificacion", "Clasificacion")
+                        .WithMany("Autores")
+                        .HasForeignKey("ClasificacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clasificacion");
                 });
 
             modelBuilder.Entity("ProyectoFinalSem.Modelos.Clasificacion", b =>

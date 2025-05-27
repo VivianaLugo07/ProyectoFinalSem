@@ -1,0 +1,42 @@
+﻿@page "/editoriales"
+@inject IRepositorioEditoriales _repositorioEditoriales
+
+<h3>Editoriales</h3>
+
+@if (_editoriales is null)
+{
+    <p><em>Cargando...</em></p>
+}
+else if (!_editoriales.Any())
+{
+    <p>No hay editoriales registradas.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var editorial in _editoriales)
+            {
+                <tr>
+                    <td>@editorial.Id</td>
+                    <td>@editorial.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Editorial> _editoriales;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editoriales = await _repositorioEditoriales.GetEditoriales();
+    }
+}

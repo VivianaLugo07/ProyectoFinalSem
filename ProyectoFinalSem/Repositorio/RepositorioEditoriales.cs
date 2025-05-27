@@ -3,22 +3,27 @@ using ProyectoFinalSem.Modelos;
 
 namespace ProyectoFinalSem.Repositorio
 {
-    // Acciones para conectarme con la base de datos
-    public class RepositorioEditoriales(BibliotecaDbContext _context) : IRepositorioEditoriales
+    public class RepositorioEditoriales : IRepositorioEditoriales
     {
-        // Obtener todas las editoriales
+        private readonly BibliotecaDbContext _context;
+
+        public RepositorioEditoriales(BibliotecaDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<Editorial>> GetAll()
         {
             return await _context.Editoriales.ToListAsync();
         }
 
-        // Obtener una editorial por ID
         public async Task<Editorial?> Get(int id)
         {
-            return await _context.Editoriales.FindAsync(id);
+            return await _context.Editoriales
+                .Include(e => e.Autores) 
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        // Agregar una nueva editorial
         public async Task<Editorial?> Add(Editorial editorial)
         {
             await _context.Editoriales.AddAsync(editorial);
@@ -26,7 +31,6 @@ namespace ProyectoFinalSem.Repositorio
             return editorial;
         }
 
-        // Actualizar una editorial existente
         public async Task Update(int id, Editorial editorial)
         {
             var existente = await _context.Editoriales.FindAsync(id);
@@ -37,7 +41,6 @@ namespace ProyectoFinalSem.Repositorio
             }
         }
 
-        // Eliminar una editorial
         public async Task Delete(int id)
         {
             var editorial = await _context.Editoriales.FindAsync(id);
@@ -48,7 +51,6 @@ namespace ProyectoFinalSem.Repositorio
             }
         }
 
-        // Método adicional si necesitas compatibilidad con GetEditoriales()
         public async Task<List<Editorial>> GetEditoriales()
         {
             return await GetAll();

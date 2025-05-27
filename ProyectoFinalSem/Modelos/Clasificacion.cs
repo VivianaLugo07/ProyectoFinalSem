@@ -1,4 +1,5 @@
-﻿namespace ProyectoFinalSem.Modelos
+﻿using System.ComponentModel.DataAnnotations;
+namespace ProyectoFinalSem.Modelos
 {
     public class Clasificacion
     {

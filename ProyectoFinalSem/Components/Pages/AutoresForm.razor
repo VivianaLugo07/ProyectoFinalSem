@@ -1,5 +1,6 @@
 ﻿@page "/autores/nueva"
 @page "/autores/editar/{Id:int}"
+
 @rendermode InteractiveServer
 @inject NavigationManager _navigationManager
 @inject IRepositorioAutores _repositorioAutores
@@ -57,7 +58,7 @@
     <div class="row mb-3">
         <label for="txtEditoriales" class="col-2 col-form-label">Editoriales</label>
         <div class="col-10">
-            <select id="txtEditoriales" class="form-select" multiple size="3">
+            <select id="txtEditoriales" class="form-select" multiple size="3" @bind="@_editorialesSeleccionados">
                 @foreach (Editorial editorial in _editoriales)
                 {
                     <option value="@editorial.Id">@editorial.Nombre</option>
@@ -67,8 +68,10 @@
     </div>
 
 
+
     <button type="submit" class="btn btn-primary">Guardar</button>
-    <button class="btn btn-danger ms-3"@onclick= "Cancelar" @onclick:preventDefault>Cancelar</button>
+    <button type="button" class="btn btn-danger ms-3" @onclick="Cancelar">Cancelar</button>
+
 
 </EditForm>
 
@@ -87,6 +90,7 @@
     {
         _clasificaciones = await _repositorioClasificaciones.GetClasificaciones();
         _editoriales = await _repositorioEditoriales.GetEditoriales();
+
         if (Id > 0)
         {
             var autorExistente = await _repositorioAutores.Get(Id);
@@ -102,8 +106,39 @@
         }
     }
 
+    <!--protected override async Task OnInitializedAsync()
+    {
+        _clasificaciones = await _repositorioEditorialess.GetEditoriales();
+        _editoriales = await _repositorioEditoriales.GetEditoriales();
+        if (Id > 0)
+        {
+            _autor= await _repositorioEditoriales.GetEditorial();
+            if (autor.editoriales.Count != 0){_editorialesSeleccionados = _autores.Editoriales.Select(i=> i.Id).ToArray();}
+            {
+                
+                _mensaje = "Modificar";
+            }
+            else
+            {
+                _mensaje = "Nuevo";
+            }
+        }
+    }-->
     private async Task Guardar()
     {
+        if (_editorialesSeleccionados.Any())
+        {
+            var editorialesRelacionadas = _editoriales
+                .Where(e => _editorialesSeleccionados.Contains(e.Id))
+                .ToList();
+
+            _autor.Editoriales = editorialesRelacionadas;
+        }
+        else
+        {
+            _autor.Editoriales = new List<Editorial>();
+        }
+
         if (Id > 0)
         {
             await _repositorioAutores.Update(Id, _autor);
@@ -113,8 +148,9 @@
             await _repositorioAutores.Add(_autor);
         }
 
-        Cancelar(); // Redirige después de guardar
+        Cancelar();
     }
+
 
     private void Cancelar()
     {
