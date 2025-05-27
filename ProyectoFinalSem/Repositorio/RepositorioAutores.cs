@@ -1,18 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoFinalSem.Modelos;
-//  acciones para conectarme con la base de datos
 
+// acciones para conectarme con la base de datos
 namespace ProyectoFinalSem.Repositorio
 {
-    public class RepositorioAutores : IRepositorioAutores
+    public class RepositorioAutores(BibliotecaDbContext _context) : IRepositorioAutores
     {
-        private readonly BibliotecaDbContext _context;
-
-        public RepositorioAutores(BibliotecaDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<Autor?> Add(Autor autor)
         {
             await _context.Autores.AddAsync(autor);

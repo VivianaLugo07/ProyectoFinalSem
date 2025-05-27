@@ -4,6 +4,7 @@
 @inject NavigationManager _navigationManager
 @inject IRepositorioAutores _repositorioAutores
 @inject IRepositorioClasificaciones _repositorioClasificaciones
+@inject IRepositorioEditoriales _repositorioEditoriales
 
 <PageTitle>Autores</PageTitle>
 
@@ -52,7 +53,20 @@
             <ValidationMessage For="@(() => _autor.Nombre)" />
         </div>
     </div>
-    <!------------------------------------------------------------------------------->
+    <!-------------------------EDITORIALES-----<------------------------------------------------->
+    <div class="row mb-3">
+        <label for="txtEditoriales" class="col-2 col-form-label">Editoriales</label>
+        <div class="col-10">
+            <select id="txtEditoriales" class="form-select" multiple size="3">
+                @foreach (Editorial editorial in _editoriales)
+                {
+                    <option value="@editorial.Id">@editorial.Nombre</option>
+                }
+            </select>
+        </div>
+    </div>
+
+
     <button type="submit" class="btn btn-primary">Guardar</button>
     <button class="btn btn-danger ms-3"@onclick= "Cancelar" @onclick:preventDefault>Cancelar</button>
 
@@ -66,10 +80,13 @@
     private string _mensaje = "Nuevo";
 
     private List<Clasificacion> _clasificaciones = new();
+    private List<Editorial> _editoriales = new();
+    private int[] _editorialesSeleccionados =new int[]{};
+
     protected override async Task OnInitializedAsync()
     {
         _clasificaciones = await _repositorioClasificaciones.GetClasificaciones();
-
+        _editoriales = await _repositorioEditoriales.GetEditoriales();
         if (Id > 0)
         {
             var autorExistente = await _repositorioAutores.Get(Id);

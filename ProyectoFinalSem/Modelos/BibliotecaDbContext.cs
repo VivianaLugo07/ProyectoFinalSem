@@ -10,5 +10,7 @@ namespace ProyectoFinalSem.Modelos
 
         public DbSet<Autor> Autores { get; set; }
         public DbSet<Clasificacion> Clasificaciones { get; set; }
+        public DbSet<Editorial> Editoriales { get; set; }
+
     }
 }
