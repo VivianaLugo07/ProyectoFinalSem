@@ -32,12 +32,18 @@ namespace ProyectoFinalSem.Repositorio
 
         public async Task<Autor?> Get(int id)
         {
-            return await _context.Autores.FindAsync(id);
+            // Incluye la Clasificación al obtener un solo autor
+            return await _context.Autores
+                .Include(a => a.Clasificacion)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<List<Autor>> GetAll()
         {
-            return await _context.Autores.ToListAsync();
+            // Incluye la Clasificación para cada autor
+            return await _context.Autores
+                .Include(a => a.Clasificacion)
+                .ToListAsync();
         }
 
         public async Task Update(int id, Autor autor)
@@ -48,9 +54,9 @@ namespace ProyectoFinalSem.Repositorio
                 existente.Nombre = autor.Nombre;
                 existente.Nacionalidad = autor.Nacionalidad;
                 existente.Libro = autor.Libro;
+                existente.ClasificacionId = autor.ClasificacionId; // Asegura actualizar también la clasificación
                 await _context.SaveChangesAsync();
             }
         }
     }
 }
-

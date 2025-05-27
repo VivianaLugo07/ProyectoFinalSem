@@ -19,7 +19,8 @@ else if (_autores.Count > 0)
                 <th>Nombre</th>
                 <th>Nacionalidad</th>
                 <th>Libro</th>
-                <th>Acciones</th>
+                <th>Clasificacion</th>
+                <!--<th></th> PARA LA SIGUIENTE UNIÓN DE UNO A MUCHOS-->
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,8 @@ else if (_autores.Count > 0)
                     <td>@autor.Nombre</td>
                     <td>@autor.Nacionalidad</td>
                     <td>@autor.Libro</td>
+                    <td>@autor.Clasificacion?.Nombre</td>
+                    <!--<td></td>  PARA LA SIGUIENTE UNIÓN DE UNO A MUCHOS-->
                     <td>
                         <button class="btn btn-outline-primary" @onclick="@(() => Editar(autor.Id))">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
